@@ -1,0 +1,15 @@
+add_library(learned_index_lib INTERFACE)
+target_include_directories(learned_index_lib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(learned_index_lib INTERFACE rndbench_common)
+
+if(RNDBENCH_BUILD_TESTS)
+  add_executable(learned_index_test tests/test_learned_index.cpp)
+  target_link_libraries(learned_index_test PRIVATE learned_index_lib GTest::gtest_main)
+  include(GoogleTest)
+  gtest_discover_tests(learned_index_test)
+endif()
+
+if(RNDBENCH_BUILD_BENCHMARKS)
+  add_executable(learned_index_bench benchmarks/bench_main.cpp)
+  target_link_libraries(learned_index_bench PRIVATE learned_index_lib benchmark::benchmark)
+endif()
